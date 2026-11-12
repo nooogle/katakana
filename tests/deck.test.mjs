@@ -66,3 +66,13 @@ test('a mix-up between two-character entries keeps both entries whole',async()=>
   assert.deepEqual(mixParts(mixKey('キョ','キャ')),['キャ','キョ']);
   assert.deepEqual(mixParts(mixKey('シ','ツ')),['シ','ツ']);
 });
+test('pickPair picks one of the mark’s pairs, and whether the long or short word is shown',async()=>{
+  const {pickPair,PAIRS}=await import('../js/deck.js');
+  const seq=v=>{let i=0;return ()=>v[i++];};
+  const a=pickPair('ー',seq([0,0.2]));
+  assert.equal(a.long,PAIRS['ー'][0].long);assert.equal(a.showLong,true);
+  const b=pickPair('ッ',seq([0.999,0.7]));
+  assert.equal(b.long,PAIRS['ッ'][9].long);assert.equal(b.showLong,false);
+  assert.equal(b.word,b.short);assert.equal(b.romaji,b.rs);assert.equal(b.clip,b.as);
+  assert.equal(pickPair('カ'),null);
+});

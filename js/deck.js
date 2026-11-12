@@ -86,3 +86,11 @@ ROWS.filter(r=>r.sec==='combo'||r.sec==='foreign').forEach(r=>r.k.forEach(a=>{
 // Two entries the learner mixed up, as one key (the same whichever way round), and back again
 export const mixKey=(a,b)=>[a,b].sort().join('|');
 export const mixParts=key=>key.split('|');
+
+/** For ー or ッ: one of its pairs at random, and which word of it to show or play (word, romaji, clip).
+ *  null for anything else. rand is there so the tests can choose. */
+export function pickPair(k,rand=Math.random){
+  const list=PAIRS[k];if(!list)return null;
+  const p=list[Math.min(list.length-1,Math.floor(rand()*list.length))],showLong=rand()<0.5;
+  return {...p,showLong,word:showLong?p.long:p.short,romaji:showLong?p.rl:p.rs,clip:showLong?p.al:p.as};
+}

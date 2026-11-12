@@ -7,7 +7,7 @@ import {S,save,fresh,replaceState} from './storage.js';
 import {ROWMAP,BY} from './deck.js';
 import {migrate} from './scheduler.js';
 import {shuffle,buildReview,buildPractice,buildRunThrough} from './queues.js';
-import {speak} from './sound.js';
+import {speak,speakWord} from './sound.js';
 import {toast} from './ui.js';
 import {closeSheet,rowSheet,settingsSheet,feedbackSheet} from './sheets.js';
 import {closeTip,resetTips} from './tips.js';
@@ -56,6 +56,7 @@ document.addEventListener('click',e=>{
       break;
     // Sound
     case 'speak':speak(b.dataset.k);break;
+    case 'speakword':speakWord(b.dataset.t,b.dataset.c);break; // a word from a ー/ッ pair
     case 'testvoice':(async()=>{for(const k of ['ハ','ヘ','ヲ','ン','ファ'])await speak(k);})();break;
     // During a session
     case 'answer':answer(b.dataset.k);break;

@@ -77,6 +77,13 @@ button{font:inherit;color:inherit;cursor:pointer;-webkit-tap-highlight-color:tra
 .sq::before,.wsq::before,.wcell::before,.pmodel::before{content:"";position:absolute;left:50%;top:0;bottom:0;border-left:1px dashed var(--guide)}
 .sq::after,.wsq::after,.wcell::after,.pmodel::after{content:"";position:absolute;top:50%;left:0;right:0;border-top:1px dashed var(--guide)}
 .sq .big{position:relative;z-index:1;font-family:var(--kana);font-size:min(38vw,150px);line-height:1;font-weight:400}
+.sq .big.two{font-size:min(26vw,100px);letter-spacing:-.08em} /* キャ */
+.sq .big.three{font-size:min(19vw,74px);letter-spacing:-.06em} /* カッタ */
+/* The two words of a ー/ッ pair, tap to hear each one */
+.pairs{display:flex;gap:10px;justify-content:center;margin:14px 0 0}
+.pw{display:flex;flex-direction:column;align-items:center;gap:2px;min-width:104px;padding:8px 14px;border-radius:14px;border:1.5px solid var(--line);background:var(--card);color:var(--ink)}
+.pw .kana{font-family:var(--kana);font-size:1.8rem;font-weight:600}
+.pw small{font-weight:700;color:var(--muted)}
 .sq .roma{position:relative;z-index:1;font-size:min(15vw,60px);font-weight:700}
 .model{position:absolute;inset:0;display:grid;place-items:center;font-family:var(--kana);font-size:min(60vw,230px);line-height:1;color:var(--accent);opacity:0;z-index:1;pointer-events:none}
 .model.show{opacity:.3}
