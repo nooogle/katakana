@@ -88,4 +88,4 @@ The fonts are kept in the app, not loaded from Google, so they work offline. To 
 
 ## Saved progress
 
-Progress lives in `localStorage` under the key `katakana-drill-v1`, as one JSON object (`S` in `storage.js`). Keep that format compatible, or add a conversion step like `migrate()` in `scheduler.js`, so nobody loses their progress when the app updates.
+Progress lives in `localStorage` under the key `katakana-drill-v1`, as one JSON object (`S` in `storage.js`). A backup is that object as text with an `"app":"katakana-drill"` label added (`js/backup.js`), so a Hiragana drill backup pasted into Restore is turned away instead of being loaded. Keep that format compatible, or add a conversion step like `migrate()` in `scheduler.js`, so nobody loses their progress when the app updates.

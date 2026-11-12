@@ -17,7 +17,7 @@ function files(dir){
 const read=p=>readFileSync(join(ROOT,p),'utf8');
 
 test('no file uses the Hiragana drill storage key or cache names',()=>{
-  const bad=files(ROOT).filter(p=>/hiragana-drill|'hiragana-'|hiragana-preview-/.test(readFileSync(p,'utf8')));
+  const bad=files(ROOT).filter(p=>/hiragana-drill-v1|'hiragana-'|hiragana-preview-/.test(readFileSync(p,'utf8')));
   assert.deepEqual(bad.map(p=>p.slice(ROOT.length)),[]);
 });
 test('progress is saved under katakana-drill-v1',()=>{
