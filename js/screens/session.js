@@ -26,6 +26,11 @@ export function startSession(mode,queue){
 function stillHere(){const s=sess,p=s&&s.pos;return ()=>sess===s&&(!s||s.pos===p);}
 
 // The right answer plus three wrong ones, preferring look-alikes from rows already added
+// Two-character entries (キャ) get double-width writing boxes, split down the middle: one half per character
+const two=k=>[...k].length>1?' two':'';
+// The faint answer shown in a writing box when there's no stroke data: one character per half
+const modelText=k=>two(k)?[...k].map(c=>`<span>${c}</span>`).join(''):k;
+
 function pickOptions(it){
   const active=KANA.filter(x=>S.rows.includes(x.row));
   const ok=x=>x.k!==it.k&&x.s!==it.s;
@@ -73,7 +78,7 @@ function renderCard(){
     }
   }else{
     app.innerHTML=`${bar()}<div class="stage"><p class="ask">Write this one</p><p class="romaline">${it.r}${spkBtn(k)}</p>
-      <div class="wsq"><span class="model" id="model">${k}</span><canvas id="cv" aria-label="Drawing area"></canvas></div>
+      <div class="wsq${two(k)}"><span class="model" id="model">${modelText(k)}</span><canvas id="cv" aria-label="Drawing area"></canvas></div>
       <div class="btns2" id="wbtns"><button class="secondary" data-act="clear">Clear</button><button class="primary" data-act="check">Check</button></div>
       <button class="dk" data-act="wdk">Don't know</button></div>`;
     setupCanvas(document.getElementById('cv'));
@@ -206,16 +211,16 @@ function showPStep(){
   const clear=`<button class="secondary" data-act="clear">Clear</button>`;
   let box,say,btns;
   if(step===1){
-    box=`<div class="wsq"><button class="trace" id="trace" data-act="strokes" data-plain="1" aria-label="${k}: tap to watch the strokes again"></button></div>`;
+    box=`<div class="wsq${two(k)}"><button class="trace" id="trace" data-act="strokes" data-plain="1" aria-label="${k}: tap to watch the strokes again"></button></div>`;
     say='Watch the strokes go in';
     btns=`<button class="secondary" data-act="pwatch">Replay</button><button class="primary" data-act="pnext">Next</button>`;
   }else if(step===2){
-    box=`<div class="wsq"><span class="guide ghost" id="guide">${strokesSVG(k,false)}</span><canvas id="cv" aria-label="Drawing area"></canvas></div>`;
+    box=`<div class="wsq${two(k)}"><span class="guide ghost" id="guide">${strokesSVG(k,false)}</span><canvas id="cv" aria-label="Drawing area"></canvas></div>`;
     say='Trace over it, in order';
     btns=`${clear}<button class="primary" data-act="pnext">Next</button>`;
   }else{
-    const model=step===3?`<span class="pmodel">${strokesSVG(k)}</span>`:'';
-    box=`<div class="pside" id="pside">${model}<div class="wsq"><canvas id="cv" aria-label="Drawing area"></canvas></div></div>`;
+    const model=step===3?`<span class="pmodel${two(k)}">${strokesSVG(k)}</span>`:'';
+    box=`<div class="pside${two(k)}" id="pside">${model}<div class="wsq${two(k)}"><canvas id="cv" aria-label="Drawing area"></canvas></div></div>`;
     say=step===3?'Copy it, in order':'Now write it from memory';
     btns=`${clear}<button class="primary" data-act="${step===3?'pnext':'pdone'}">${step===3?'Next':'Done'}</button>`;
   }
@@ -246,7 +251,7 @@ export function pDone(){
   if(!sess||!sess.ps)return;
   const w=sess.ps;
   document.getElementById('cv').dataset.locked='1';
-  document.getElementById('pside').insertAdjacentHTML('afterbegin',`<span class="pmodel"><button class="trace" id="trace" data-act="strokes" aria-label="Correct answer: ${w.k}. Tap to see the stroke order again"></button></span>`);
+  document.getElementById('pside').insertAdjacentHTML('afterbegin',`<span class="pmodel${two(w.k)}"><button class="trace" id="trace" data-act="strokes" aria-label="Correct answer: ${w.k}. Tap to see the stroke order again"></button></span>`);
   replayStrokes();
   document.getElementById('wstep').textContent='Tap the answer to watch it again';
   document.getElementById('wbtns').innerHTML=`<button class="secondary" data-act="practise">Again</button><button class="primary" data-act="next">Next</button>`;
@@ -265,10 +270,10 @@ const STEP_PAUSE_MS=700;
 // Turn the card into the worksheet row for kana k (which has n strokes), starting from stroke 1
 function practiseClassic(k,n){
   sess.ws={k,n,step:1};
-  const cells=Array.from({length:n+1},(_,i)=>`<span class="wcell" id="wc${i+1}">${i<n?stepSVG(k,i+1):''}</span>`).join('');
+  const cells=Array.from({length:n+1},(_,i)=>`<span class="wcell${two(k)}" id="wc${i+1}">${i<n?stepSVG(k,i+1):''}</span>`).join('');
   document.querySelector('.stage').innerHTML=`<p class="ask">Practise writing it</p>
     <div class="wrow"><span class="wrom">${BY[k].r}</span>${cells}</div>
-    <div class="wsq"><span class="guide" id="guide"></span><canvas id="cv" aria-label="Drawing area"></canvas></div>
+    <div class="wsq${two(k)}"><span class="guide" id="guide"></span><canvas id="cv" aria-label="Drawing area"></canvas></div>
     <p class="wstep" id="wstep"></p><div class="btns2" id="wbtns"></div>`;
   const cv=document.getElementById('cv');
   setupCanvas(cv);

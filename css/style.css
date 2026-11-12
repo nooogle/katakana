@@ -103,14 +103,29 @@ canvas{position:absolute;inset:0;width:100%;height:100%;z-index:2;touch-action:n
 .psteps li{flex:1;text-align:center;font-size:.78rem;font-weight:700;color:var(--muted);padding:5px 0;border:1.5px solid var(--line);border-radius:999px}
 .psteps li.now{border-color:var(--accent);color:var(--accent);box-shadow:0 0 0 1px var(--accent)}
 .psteps li.done{color:var(--ok)}
-.ghost .strokes,.pmodel>.strokes{position:absolute;inset:0;width:100%;height:100%;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.ghost .strokes,.pmodel>.strokes,.pmodel>.multi .strokes{position:absolute;inset:0;width:100%;height:100%;fill:none;stroke-linecap:round;stroke-linejoin:round}
 .ghost .strokes{stroke:var(--bad);stroke-width:4;opacity:.3}
-.pmodel>.strokes{stroke:var(--ink);stroke-width:4}
-.pmodel>.strokes text{fill:var(--accent);stroke:var(--card);stroke-width:2;paint-order:stroke;font:700 12px var(--ui)}
+.pmodel>.strokes,.pmodel>.multi .strokes{stroke:var(--ink);stroke-width:4}
+.pmodel>.strokes text,.pmodel>.multi .strokes text{fill:var(--accent);stroke:var(--card);stroke-width:2;paint-order:stroke;font:700 12px var(--ui)}
 .pmodel .trace .strokes text{font-size:12px;stroke-width:2} /* the small box needs bigger numbers */
 .pside{display:flex;gap:10px;align-items:flex-start;justify-content:center;width:min(92vw,420px)}
 .pside .wsq{flex:none;width:min(60vw,260px)}
 .pmodel{position:relative;flex:none;width:min(28vw,130px);aspect-ratio:1;background:var(--card);border:1.5px solid var(--line);border-radius:6px}
+/* Two-character entries (キャ, ファ): double-width boxes with a solid line between the halves and a dashed guide down
+   the middle of each. A stroke picture for each character sits side by side in .multi. */
+.multi{position:absolute;inset:0;display:flex}
+.multi>svg{position:static!important;flex:1 1 0;min-width:0;width:auto!important;height:100%!important}
+.wsq.two,.pmodel.two,.wcell.two{aspect-ratio:2/1;background-repeat:no-repeat;
+  background-image:linear-gradient(var(--line),var(--line)),repeating-linear-gradient(to bottom,var(--guide) 0 3px,transparent 3px 6px),repeating-linear-gradient(to bottom,var(--guide) 0 3px,transparent 3px 6px);
+  background-size:2px 100%,1px 100%,1px 100%;background-position:50% 0,25% 0,75% 0}
+.wsq.two::before,.pmodel.two::before,.wcell.two::before{display:none}
+.wsq.two{width:min(92vw,420px)}
+.wsq.two .model{grid-template-columns:1fr 1fr;font-size:min(40vw,180px)}
+.wsq.two .model span{display:grid;place-items:center}
+.pside.two{flex-direction:column;align-items:center}
+.pside.two .wsq{width:min(92vw,420px)}
+.pside.two .pmodel{width:min(56vw,220px)}
+.wcell.two{max-width:76px}
 .wstep{color:var(--muted);font-weight:700;margin:12px 0 0;text-align:center}
 .romaline{font-size:2rem;font-weight:700;margin:0 0 12px;display:flex;align-items:center;gap:12px}
 .romaline .spk{margin:0}
