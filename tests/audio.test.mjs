@@ -15,6 +15,6 @@ test('the clip list covers every entry and every pair word',()=>{
 test('the clips carried over from the Hiragana drill are all here',()=>{
   assert.deepEqual(Object.keys(CLIPS).filter(n=>!NEW_CLIPS.includes(n)&&!has(n)),[]);
 });
-test('the new clips are all here',{todo:'run tools/make_voice.py'},()=>{
+test('the new clips are all here',()=>{
   assert.deepEqual(NEW_CLIPS.filter(n=>!has(n)),[]);
 });

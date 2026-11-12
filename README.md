@@ -70,11 +70,11 @@ The parts that are plain data (the deck, hints, stroke data, the clip list) and 
 node --test tests/*.test.mjs
 ```
 
-One check is marked "todo" until the new voice clips are made (see below): it lists the missing ones without failing.
+One check makes sure every voice clip the app asks for is in `audio/`.
 
 ## Voice clips
 
-Most clips are the Hiragana drill's, since the sounds are the same. The foreign sounds and the made-up ー/ッ words are new. To make them, set `GOOGLE_API_KEY` and run `python3 tools/make_voice.py`: it makes every clip that isn't in `audio/` yet, into `out/`. Trim, level and listen to them as [the voice page](how-the-voice-was-made.html) describes, copy them into `audio/`, and rebuild the offline cache list. Never commit the key.
+Most clips are the Hiragana drill's, since the sounds are the same. The foreign sounds and the made-up ー/ッ words are new. To make them, set `GOOGLE_API_KEY` and run `python3 tools/make_voice.py`: it makes every clip that isn't in `audio/` yet, into `out/`. Then `python3 tools/tidy_voice.py` trims and levels them to match the others and puts them in `audio/` (it needs ffmpeg). Listen to them, and rebuild the offline cache list. Never commit the key.
 
 ## The offline cache
 

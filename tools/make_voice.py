@@ -11,8 +11,8 @@ top of the repo. It needs Node (to read the clip list from the deck) and a Googl
     VOICE=ja-JP-Chirp3-HD-Kore python3 tools/make_voice.py
 
 The text sent is katakana: Google reads foreign sounds like ファ more naturally that way.
-Then trim the silence, level the volume and listen to each one (as the voice page describes),
-copy them into audio/ and rerun tools/make_sw.py with a new version name.
+Then run tools/tidy_voice.py to trim and level them into audio/, listen to each one,
+and rerun tools/make_sw.py with a new version name.
 Never commit the key.
 
 Standard library only.
