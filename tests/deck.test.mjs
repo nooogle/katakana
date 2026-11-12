@@ -76,3 +76,22 @@ test('pickPair picks one of the mark’s pairs, and whether the long or short wo
   assert.equal(b.word,b.short);assert.equal(b.romaji,b.rs);assert.equal(b.clip,b.as);
   assert.equal(pickPair('カ'),null);
 });
+test('a mix-up only counts between two real entries (not the other word of a ー/ッ pair)',async()=>{
+  const {mixKey}=await import('../js/deck.js');
+  assert.equal(mixKey('ー','~'),null);
+  assert.equal(mixKey('カ','?'),null);
+  assert.ok(mixKey('シ','ツ'));
+});
+test('ー and ッ have no sound of their own; everything else does',async()=>{
+  const {hasSound}=await import('../js/deck.js');
+  assert.equal(hasSound('ー'),false);
+  assert.equal(hasSound('ッ'),false);
+  assert.equal(hasSound('カ'),true);
+  assert.equal(hasSound('ファ'),true);
+});
+test('a backup from another app (or with cards not in this deck) is spotted before it is restored',async()=>{
+  const {unknownCards}=await import('../js/deck.js');
+  assert.deepEqual(unknownCards({cards:{'あ|read':{},'か|write':{}}}),['あ|read','か|write']);
+  assert.deepEqual(unknownCards({cards:{'ア|read':{},'キャ|write':{}}}),[]);
+  assert.deepEqual(unknownCards({cards:{}}),[]);
+});

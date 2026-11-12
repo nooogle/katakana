@@ -4,7 +4,7 @@
 // one click handler for the whole page reads that attribute and calls the right function.
 
 import {S,save,fresh,replaceState} from './storage.js';
-import {ROWMAP,BY} from './deck.js';
+import {ROWMAP,BY,unknownCards} from './deck.js';
 import {migrate} from './scheduler.js';
 import {shuffle,buildReview,buildPractice,buildRunThrough} from './queues.js';
 import {speak,speakWord} from './sound.js';
@@ -87,6 +87,7 @@ document.addEventListener('click',e=>{
     case 'restore':{
       const txt=document.getElementById('restore').value.trim();
       try{const s=JSON.parse(txt);if(!s.rows||!s.cards)throw 0;
+        if(unknownCards(s).length){toast('That backup is from another app, such as the Hiragana drill');break;}
         if(confirm('Replace the progress on this phone with this backup?')){
           const restored=Object.assign(fresh(),s);if(!s.v)restored.v=1; // backups from before FSRS get converted
           replaceState(restored);migrate();closeSheet();renderHome();toast('Backup restored');}

@@ -2,7 +2,7 @@
 // Also makes sure sounds never overlap and that nothing moves on before a sound has finished.
 
 import {S} from './storage.js';
-import {BY} from './deck.js';
+import {BY,hasSound} from './deck.js';
 
 // Voice clips: Google Cloud Text-to-Speech, one MP3 per entry in audio/, named in the deck (BY[k].a; see tools/clips.mjs)
 const AUDIO_FILE=k=>{const it=BY[k];return it&&it.a?'audio/'+it.a+'.mp3':null;};
@@ -61,6 +61,7 @@ export function speak(text,clip=AUDIO_FILE(text)){
     try{player.onended=finish;player.onerror=()=>{if(!speakTTS(text,finish))finish();};player.muted=false;player.src=clip;player.currentTime=0;
       const p=player.play();if(p&&p.catch)p.catch(finish);return soundDone;}catch(e){}
   }
+  if(BY[text]&&!hasSound(text)){finish();return soundDone;} // ー and ッ: nothing to say on their own
   if(!speakTTS(text,finish))finish();
   return soundDone;
 }

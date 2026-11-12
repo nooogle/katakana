@@ -146,7 +146,7 @@ export function answer(chosen){
   {const d=document.querySelector('.dk');if(d)d.remove();}
   record(id,ok);
   if(dk){S.log[S.log.length-1].dk=true;save();}
-  else if(!ok){S.log[S.log.length-1].c=chosen;save();} // remember what was picked, to spot mix-ups
+  else if(!ok&&!sess.pair){S.log[S.log.length-1].c=chosen;save();} // remember what was picked, to spot mix-ups
   if(sess.listen){
     S.log[S.log.length-1].v='listen';save();
     const sq=document.getElementById('lsq');if(sq)sq.innerHTML=`<span class="roma">${sess.pair?sess.pair.romaji:it.r}</span>`;

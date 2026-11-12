@@ -83,8 +83,9 @@ ROWS.filter(r=>r.sec==='combo'||r.sec==='foreign').forEach(r=>r.k.forEach(a=>{
   if(BY[a[0]])link(a,a[0]);
 }));
 
-// Two entries the learner mixed up, as one key (the same whichever way round), and back again
-export const mixKey=(a,b)=>[a,b].sort().join('|');
+// Two entries the learner mixed up, as one key (the same whichever way round), and back again.
+// null unless both are real entries (on a ー/ッ card the other word is '~', which isn't one).
+export const mixKey=(a,b)=>BY[a]&&BY[b]?[a,b].sort().join('|'):null;
 export const mixParts=key=>key.split('|');
 
 /** For ー or ッ: one of its pairs at random, and which word of it to show or play (word, romaji, clip).
@@ -94,3 +95,9 @@ export function pickPair(k,rand=Math.random){
   const p=list[Math.min(list.length-1,Math.floor(rand()*list.length))],showLong=rand()<0.5;
   return {...p,showLong,word:showLong?p.long:p.short,romaji:showLong?p.rl:p.rs,clip:showLong?p.al:p.as};
 }
+
+/** Whether entry k has a sound of its own (ー and ッ don't: they only change the sounds around them). */
+export const hasSound=k=>!!(BY[k]&&BY[k].a);
+
+/** Card ids in a saved progress object that aren't in this deck, such as a Hiragana drill backup's. */
+export const unknownCards=state=>Object.keys((state&&state.cards)||{}).filter(id=>!BY[id.split('|')[0]]);

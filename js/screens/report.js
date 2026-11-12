@@ -23,7 +23,7 @@ function reportData(){
   const misses={},pairs={};
   log.filter(l=>l.t>=today.getTime()-13*DAY&&!l.ok).forEach(l=>{
     const k=l.id.split('|')[0];misses[k]=(misses[k]||0)+1;
-    if(l.c){const p=mixKey(k,l.c);pairs[p]=(pairs[p]||0)+1;}
+    if(l.c){const p=mixKey(k,l.c);if(p)pairs[p]=(pairs[p]||0)+1;}
   });
   const levels=[0,0,0,0,0];KANA.forEach(it=>{const v=level(it);if(v>=1)levels[v]++;});
   const w=days.slice(7);
