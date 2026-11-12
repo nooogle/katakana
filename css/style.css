@@ -43,9 +43,10 @@ button{font:inherit;color:inherit;cursor:pointer;-webkit-tap-highlight-color:tra
 
 .chart h2{font-size:.95rem;margin:18px 2px 8px;color:var(--muted);font-weight:700}
 .row{display:flex;align-items:center;gap:8px;width:100%;background:none;border:0;padding:3px 0;text-align:left}
-.cells{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;flex:1}
+.cells{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:5px;flex:1}
 .cell{aspect-ratio:1;display:grid;place-items:center;border-radius:9px;font-family:var(--kana);font-size:1.45rem;font-weight:600;background:var(--l0)}
 .row.off .cell{color:var(--muted);background:transparent;border:1.5px dashed var(--line)}
+.cell.two{font-size:1.1rem;letter-spacing:-.12em;white-space:nowrap} /* two-character entries (キャ, ファ) */
 .tag{width:40px;flex:none;font-size:.82rem;font-weight:700;color:var(--accent);text-align:center}
 .legend{display:flex;gap:14px;flex-wrap:wrap;font-size:.82rem;color:var(--muted);margin:16px 2px 0}
 .howlink{margin:22px 2px 0;font-size:.95rem}

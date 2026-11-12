@@ -49,7 +49,7 @@ document.addEventListener('click',e=>{
     case 'rownew':if(!S.rows.includes(row))S.rows.push(row);save();closeSheet();renderHome();break;
     case 'rowadd':
       if(!S.rows.includes(row))S.rows.push(row);save();closeSheet();
-      startSession('placement',shuffle([...ROWMAP[row].k].map(k=>k+'|read')));break;
+      startSession('placement',shuffle(ROWMAP[row].k.map(k=>k+'|read')));break;
     case 'rowpractice':closeSheet();startSession('practice',buildPractice(row));break;
     case 'rowremove':
       if(confirm('Remove this row from your chart? Its progress is kept if you add it back.')){S.rows=S.rows.filter(r=>r!==row);save();closeSheet();renderHome();}
