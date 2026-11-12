@@ -4,8 +4,8 @@
 import {S} from './storage.js';
 import {BY} from './deck.js';
 
-// Voice clips: Google Cloud Text-to-Speech, one MP3 per kana in audio/, named by romaji (ぢ and づ as di and du)
-const AUDIO_FILE=k=>{const it=BY[k];return it?'audio/'+({'ぢ':'di','づ':'du'}[k]||it.r)+'.mp3':null;};
+// Voice clips: Google Cloud Text-to-Speech, one MP3 per entry in audio/, named in the deck (BY[k].a; see tools/clips.mjs)
+const AUDIO_FILE=k=>{const it=BY[k];return it&&it.a?'audio/'+it.a+'.mp3':null;};
 export const hasTTS='speechSynthesis' in window;
 export const canSpeak=true;
 const player=new Audio();player.preload='auto';
@@ -14,7 +14,7 @@ let audioReady=false;
 function unlockAudio(){
   // iOS only lets audio play without a tap once the player has been started from a tap
   if(audioReady)return;audioReady=true;
-  try{player.src=AUDIO_FILE('あ');player.muted=true;
+  try{player.src=AUDIO_FILE('ア');player.muted=true;
     // only stop the silent unlock clip, never a real sound that started on the same tap
     const p=player.play();if(p&&p.then)p.then(()=>{if(player.muted){player.pause();player.muted=false;}},()=>{player.muted=false;audioReady=false;});else player.muted=false;}catch(e){audioReady=false;}
 }
@@ -48,19 +48,22 @@ export function autoSpeak(k,stillHere=()=>true){
   soundDone.then(()=>{if(stillHere())speak(k);});
 }
 
-/** Play a kana straight away; returns a promise that settles when it has finished. */
-export function speak(text){
+/** Play a kana straight away (or text, with its clip), and return a promise that settles when it has finished.
+ *  If the clip won't play (say it hasn't been made yet), the phone's own voice says it instead. */
+export function speak(text,clip=AUDIO_FILE(text)){
   if(endSound)endSound(); // a new sound replaces one that's still going
   let settled=false,resolve;
   soundDone=new Promise(r=>{resolve=r;});
   const finish=()=>{if(settled)return;settled=true;if(endSound===finish)endSound=null;setTimeout(resolve,SOUND_GAP);};
   endSound=finish;
   setTimeout(finish,SOUND_MAX); // never wait forever if the phone doesn't report the end
-  const clip=AUDIO_FILE(text);
   if(clip&&S.settings.voice!=='phone'){
-    try{player.onended=finish;player.onerror=finish;player.muted=false;player.src=clip;player.currentTime=0;
+    try{player.onended=finish;player.onerror=()=>{if(!speakTTS(text,finish))finish();};player.muted=false;player.src=clip;player.currentTime=0;
       const p=player.play();if(p&&p.catch)p.catch(finish);return soundDone;}catch(e){}
   }
   if(!speakTTS(text,finish))finish();
   return soundDone;
 }
+
+/** Play a made-up word from a ー/ッ pair (カー, カッタ) by its clip name. */
+export const speakWord=(text,name)=>speak(text,'audio/'+name+'.mp3');

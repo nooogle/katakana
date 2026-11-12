@@ -56,7 +56,7 @@ document.addEventListener('click',e=>{
       break;
     // Sound
     case 'speak':speak(b.dataset.k);break;
-    case 'testvoice':(async()=>{for(const k of ['は','へ','を','ん'])await speak(k);})();break;
+    case 'testvoice':(async()=>{for(const k of ['ハ','ヘ','ヲ','ン','ファ'])await speak(k);})();break;
     // During a session
     case 'answer':answer(b.dataset.k);break;
     case 'next':next();break;
@@ -113,7 +113,7 @@ document.addEventListener('change',e=>{
     S.settings.types=ticked;save();renderHome();
   }
   if(e.target.name==='wpmode'){S.settings.practise=e.target.value;save();}
-  if(e.target.id==='voice'){S.settings.voice=e.target.value;save();speak('あ');}
+  if(e.target.id==='voice'){S.settings.voice=e.target.value;save();speak('ア');}
 });
 
 migrate();   // converts progress saved by the old box scheduler (does nothing once done)

@@ -65,7 +65,7 @@ export function settingsSheet(){
       <option value="rec" ${S.settings.voice!=='phone'?'selected':''}>Recorded voice (clearest)</option>
       ${hasTTS?`<option value="phone" ${S.settings.voice==='phone'?'selected':''}>This phone's voice</option>`:''}
     </select></label>
-    <button class="secondary" data-act="testvoice">Test: は へ を ん</button>
+    <button class="secondary" data-act="testvoice">Test: ハ ヘ ヲ ン ファ</button>
     <p class="sub" style="font-size:.8rem;margin-top:10px">Recorded voice: Google Cloud Text-to-Speech (Chirp 3 HD, Aoede). <a href="how-the-voice-was-made.html">How the clips were made</a></p>
     <h3>Backup</h3>
     <p class="sub">Progress is stored on this phone only. Copy a backup now and then, and paste it here to restore it.</p>
