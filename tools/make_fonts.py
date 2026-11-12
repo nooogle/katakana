@@ -3,10 +3,10 @@
 
 Keeping them in the app means they work offline and never hold up the page on a weak signal.
 Google splits each Japanese font into about 120 small pieces; this keeps only the pieces that cover
-characters the app actually uses (all of hiragana, plus whatever appears in the pages and scripts), so a
+characters the app actually uses (all of katakana, plus whatever appears in the pages and scripts), so a
 character that's added later and isn't covered just shows in the phone's own font.
 
-Run it from the top of the repo after adding text with new characters (such as katakana or kanji),
+Run it from the top of the repo after adding text with new characters (such as hiragana or kanji),
 then rerun tools/make_sw.py with a new version name:
 
     python3 tools/make_fonts.py
@@ -38,7 +38,7 @@ def covers(face, chars):
     return {c for c in chars if any(a <= c <= b for a, b in r)}
 
 
-used = set(range(0x20, 0x7f)) | set(range(0x3041, 0x3097))  # all of ASCII and hiragana
+used = set(range(0x20, 0x7f)) | set(range(0x30a0, 0x3100))  # all of ASCII and katakana (with ー)
 for f in glob.glob('*.html') + glob.glob('js/**/*.js', recursive=True) + glob.glob('css/*.css'):
     used |= {ord(c) for c in open(f, encoding='utf-8').read()}
 

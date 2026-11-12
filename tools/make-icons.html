@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Make the app icons</title>
+<link rel="stylesheet" href="../vendor/fonts/fonts.css">
+<style>
+  body{font:16px system-ui,sans-serif;margin:16px;background:#EEF0EA;color:#1C2333}
+  .icons{display:flex;flex-wrap:wrap;gap:16px;align-items:flex-end}
+  figure{margin:0;text-align:center;font-size:.8rem}
+  canvas{display:block;max-width:256px;margin:0 auto 4px;background:repeating-conic-gradient(#ddd 0 25%,#fff 0 50%) 0 0/16px 16px}
+</style>
+</head>
+<body>
+<h1>App icons</h1>
+<p>Draws every icon in Klee One on the app's navy, the same design as the Hiragana drill's あ icon.
+Open it from the local web server (<code>http://localhost:8000/tools/make-icons.html</code>), check them,
+then click each one to save it into <code>icons/</code> under the name shown. Rerun <code>tools/make_sw.py</code> afterwards.</p>
+<div class="icons" id="icons"></div>
+<script type="module">
+// Measured from the Hiragana drill's icon-512.png, as fractions of the icon's size
+const NAVY='#27407A',GUIDE='rgba(255,255,255,0.18)';
+const RADIUS=0.195,INSET=0.137,LINE=5/512,DASH=12/512,GAP=3/512,INK=0.58,MIDY=0.54;
+const CHAR='ア';
+// name, size, rounded corners, how much the drawing is shrunk (maskable icons need a safe zone)
+const ICONS=[['icon-512.png',512,true,1],['icon-192.png',192,true,1],['apple-touch-icon.png',180,false,1],
+  ['icon-maskable-512.png',512,false,0.8],['favicon-48.png',48,true,1],['favicon-32.png',32,true,1]];
+
+export function draw(size,round,scale){
+  const c=document.createElement('canvas');c.width=c.height=size;
+  const x=c.getContext('2d');
+  x.fillStyle=NAVY;x.beginPath();
+  if(round)x.roundRect(0,0,size,size,RADIUS*size);else x.rect(0,0,size,size);
+  x.fill();
+  // Shrink everything else towards the middle for the maskable icon
+  x.translate(size/2,size/2);x.scale(scale,scale);x.translate(-size/2,-size/2);
+  // Dashed centre guides, like the writing boxes in the app
+  x.strokeStyle=GUIDE;x.lineWidth=Math.max(1,LINE*size);x.setLineDash([Math.max(2,DASH*size),Math.max(1,GAP*size)]);
+  const a=INSET*size,b=size-a,m=size/2;
+  x.beginPath();x.moveTo(m,a);x.lineTo(m,b);x.moveTo(a,m);x.lineTo(b,m);x.stroke();
+  // The character, sized and centred by its ink rather than its font box
+  x.fillStyle='#FFFFFF';x.font=`600 ${size}px "Klee One"`;
+  let t=x.measureText(CHAR);
+  const f=INK*size/(t.actualBoundingBoxAscent+t.actualBoundingBoxDescent);
+  x.font=`600 ${size*f}px "Klee One"`;t=x.measureText(CHAR);
+  const w=t.actualBoundingBoxLeft+t.actualBoundingBoxRight,h=t.actualBoundingBoxAscent+t.actualBoundingBoxDescent;
+  x.fillText(CHAR,m-w/2+t.actualBoundingBoxLeft,MIDY*size-h/2+t.actualBoundingBoxAscent);
+  return c;
+}
+
+await document.fonts.load('600 100px "Klee One"',CHAR);
+export const made={};
+for(const [name,size,round,scale] of ICONS){
+  const c=draw(size,round,scale);made[name]=c.toDataURL('image/png');
+  const a=document.createElement('a');a.href=made[name];a.download=name;a.title='Save '+name;a.append(c);
+  const fig=document.createElement('figure');fig.append(a,name);document.getElementById('icons').append(fig);
+}
+window.madeIcons=made; // for saving them all at once from a script
+</script>
+</body>
+</html>
