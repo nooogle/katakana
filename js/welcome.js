@@ -24,7 +24,7 @@ function installHTML(){
 }
 
 const SLIDES=()=>[
-  `<div class="wbig kana">あ</div><h2>Learn to read and write katakana</h2>
+  `<div class="wbig kana">ア</div><h2>Learn to read and write katakana</h2>
    <p>A few minutes a day. The ones you find hard come back more often, and the ones you know drift away.</p>`,
   `<h2>Practise the way you'll be tested</h2>
    <ul><li><b>Read it:</b> pick the sound</li><li><b>Recognise it:</b> from romaji, or by ear</li><li><b>Write it:</b> draw it, see the stroke order, and mark yourself</li></ul>

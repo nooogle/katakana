@@ -1,6 +1,7 @@
 # katakana
 
-The Katakana drill: a small web app for learning to read and write katakana, published by GitHub Pages at
+The Katakana drill: a small web app for learning to read and write katakana, the sister of the Hiragana drill
+(`nooogle/hiragana`, copied from it in November 2026; bug fixes and features are synced by hand when worth it). Published by GitHub Pages at
 <https://nooogle.github.io/katakana/>. The home page that lists all the apps is in the separate
 `nooogle.github.io` repo; it links here, so keep the address the same.
 
@@ -9,7 +10,8 @@ Read `README.md` before working on the code.
 ## Layout
 
 - The app is at the top of the repo: `index.html`, `css/`, `js/`, `vendor/`, `icons/`, `audio/`, `sw.js` and so on.
-- `tools/`: helper scripts, run from the top of the repo (`make_sw.py` for the offline cache list, `make_strokes.py` for the stroke data, `make_fonts.py` for the fonts).
+- `tools/`: helper scripts, run from the top of the repo (`make_sw.py` for the offline cache list, `make_strokes.py` for the stroke data, `make_fonts.py` for the fonts, `make_voice.py` for the voice clips, `make-icons.html` for the icons).
+- `tests/`: checks run with `node --test tests/*.test.mjs` (Node's built-in runner; still no npm).
 - `preview/`: temporary copies of work in progress for trying on a phone. See `preview/README.md`. Delete the copy once the work is merged.
 - `.nojekyll`: tells GitHub Pages to serve files as they are.
 

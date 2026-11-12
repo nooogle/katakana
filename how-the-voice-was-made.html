@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>How I made the voice clips · Katakana drill</title>
-<meta name="description" content="How the hiragana voice clips were generated with Google Cloud Text-to-Speech (Chirp 3 HD), and the problems along the way.">
+<meta name="description" content="How the voice clips (shared with the Hiragana drill) were generated with Google Cloud Text-to-Speech (Chirp 3 HD), and the problems along the way.">
 <link rel="stylesheet" href="vendor/fonts/fonts.css">
 <style>
 :root{--paper:#EEF0EA;--card:#FAFBF7;--ink:#1C2333;--muted:#5F6674;--line:#CDD2C6;--accent:#27407A;
@@ -36,6 +36,15 @@ pre code{background:none;border:0;padding:0;font-size:.85rem}
 
 <h1>How I made the voice clips</h1>
 <p class="lead">Every sound in the app (the 46 basic kana, the ones with dakuten like <span class="kana">が</span>, and combination sounds like <span class="kana">きゃ</span>) is its own little clip. Here's how I made them with Google Cloud's Chirp 3 HD voices and a short Python script, plus the bits that went wrong.</p>
+
+<h2>The clips in the Katakana drill</h2>
+<p>Katakana sounds exactly the same as hiragana, so this app reuses the clips I made for the <a href="../hiragana/">Hiragana drill</a>: the basic kana, the dakuten ones and the combinations. Only two kinds of clip are new here, and they were made the same way:</p>
+<ul>
+<li><b>The foreign sounds</b>, like <span class="kana">ファ</span> (fa) and <span class="kana">ティ</span> (ti).</li>
+<li><b>The made-up words</b> for <span class="kana">ー</span> and <span class="kana">ッ</span>, like <span class="kana">カー</span> and <span class="kana">カッタ</span>. Their files start with <code>pair-</code>, such as <code>pair-kaa.mp3</code>.</li>
+</ul>
+<p>The clips are named by their romaji, and a few names were already taken by the hiragana clips (<code>di</code>, <code>du</code> and <code>wo</code> are <span class="kana">ヂ</span>, <span class="kana">ヅ</span> and <span class="kana">ヲ</span>). So <span class="kana">ディ</span>, <span class="kana">ドゥ</span> and <span class="kana">ウォ</span> are <code>dhi</code>, <code>dwu</code> and <code>who</code>.</p>
+<p>The script now lives in the app as <code>tools/make_voice.py</code>. It reads the list of clips straight from the app's deck, sends katakana to Google (it reads foreign sounds more naturally that way), and by default only makes the clips that aren't in <code>audio/</code> yet. The rest of this page is the story of the original hiragana clips; the steps are the same.</p>
 
 <h2>Why not just use recordings?</h2>
 <p>I wanted one clean, consistent clip per sound. I went looking for recordings someone had already shared, but couldn't find anything clearly licensed for reuse that suited this:</p>
